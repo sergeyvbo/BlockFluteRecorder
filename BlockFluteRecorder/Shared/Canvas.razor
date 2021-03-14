@@ -1,0 +1,46 @@
+﻿<div class="container-fluid">
+    <div class="row justify-content-start">
+        <div class="col">
+            <input class="form-control form-control-lg" type="text" @bind="Title" placeholder="Title">
+
+        </div>
+        <div class="col col-lg-2">
+            <div class="btn-group btn-group-lg" role="group">
+                @if (IsPlaying)
+                                {
+                <button type="button" class="btn btn-secondary btn-light" @onclick="PlayPause">
+                    <span class="oi oi-media-pause" aria-hidden="true"></span>
+                </button>
+
+                }
+                        else
+                        {
+        <button type="button" class="btn btn-secondary btn-success" @onclick="PlayPause">
+            <span class="oi oi-media-play" aria-hidden="true"></span>
+        </button>
+        }
+                <button type="button" class="btn btn-secondary btn-light" @onclick="Stop">
+                    <span class="oi oi-media-stop" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-secondary btn-light">
+                    <span class="oi oi-cloud-download" aria-hidden="true"></span>
+                </button>
+                <button type="button" class="btn btn-secondary btn-light">
+                    <span class="oi oi-cloud-upload" aria-hidden="true"></span>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div>
+    <img src="img/key.png" />
+    @foreach (var note in Track)
+        {
+    <Note note="@note" OnClick="DeleteNote" />
+        }
+
+</div>
+

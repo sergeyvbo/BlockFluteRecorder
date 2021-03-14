@@ -1,0 +1,53 @@
+﻿@page "/"
+<Canvas @ref="canvas"></Canvas>
+
+
+<div class="footer1">
+    <div class="card">
+        <div class="card-header">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-secondary">Left</button>
+                <button type="button" class="btn btn-secondary">Middle</button>
+                <button type="button" class="btn btn-secondary">Right</button>
+            </div>
+        </div>
+        <div class="card-body">
+            @foreach (var note in Notes)
+            {
+                //<img src="@note.Image" />
+                <Note note="note" OnClick="AddNote" />
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    private Canvas canvas;
+
+
+    public List<Note> Notes { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Notes = new List<Note>
+        {
+            new Note { Name = "do", Image = "img/do.png"},
+            new Note { Name = "re", Image = "img/re.png" },
+            new Note { Name = "mi", Image = "img/mi.png" },
+            new Note { Name = "fa", Image = "img/fa.png" },
+            new Note { Name = "sol", Image = "img/sol.png" },
+            new Note { Name = "la", Image = "img/la.png" },
+            new Note { Name = "si", Image = "img/si.png" },
+        };
+
+    }
+
+    void AddNote(Note note)
+    {
+
+    }
+
+}

@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BlockFluteRecorder.Model
+{
+    public partial class Note
+    {
+        public string Name { get; set; }
+        public string Image { get; set; }
+    }
+}
