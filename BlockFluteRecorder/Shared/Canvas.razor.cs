@@ -1,4 +1,5 @@
 ﻿using BlockFluteRecorder.Model;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,20 @@ namespace BlockFluteRecorder.Shared
         public IJSRuntime js;
         public string Title { get; set; }
         public bool IsPlaying { get; set; } = false;
-        public List<Note> Track { get; set; } = new List<Note>();
+        [Parameter]
+        public Track CurrentTrack {
+            get 
+            {
+                return new Track { Notes = Track, Title = Title };
+            }
+            set 
+            {
+                Track = value?.Notes;
+                Title = value?.Title;
+                StateHasChanged();
+            }
+        }
+        public List<Note> Track { get; set; }
         public void PlayPause() => IsPlaying = !IsPlaying;
         public void Stop()
         {
@@ -36,6 +50,11 @@ namespace BlockFluteRecorder.Shared
         public void Print()
         {
             Console.WriteLine("printing");
+        }
+
+        protected override void OnInitialized()
+        {
+            Track ??= new();
         }
     }
 }
