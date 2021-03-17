@@ -22,6 +22,9 @@
                 <button type="button" class="btn btn-secondary btn-light" @onclick="Stop">
                     <span class="oi oi-media-stop" aria-hidden="true"></span>
                 </button>
+                <button type="button" class="btn btn-secondary btn-light" @onclick="Save">
+                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span>
+                </button>
                 <button type="button" class="btn btn-secondary btn-light">
                     <span class="oi oi-cloud-download" aria-hidden="true"></span>
                 </button>
@@ -42,7 +45,7 @@
     <img src="img/key.png" />
     @foreach (var note in Track)
         {
-    <Note note="@note" OnClick="DeleteNote" />
+    <Note Value="@note" OnClick="DeleteNote" />
         }
 
 </div>

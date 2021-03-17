@@ -14,6 +14,8 @@ namespace BlockFluteRecorder.Shared
         public IJSRuntime js;
         public string Title { get; set; }
         public bool IsPlaying { get; set; } = false;
+
+        
         [Parameter]
         public Track CurrentTrack {
             get 

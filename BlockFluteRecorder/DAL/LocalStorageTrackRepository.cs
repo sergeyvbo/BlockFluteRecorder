@@ -28,7 +28,8 @@ namespace BlockFluteRecorder.DAL
         public async Task<List<Track>> FindAllAsync()
         {
             var result = new List<Track>();
-            for (int i = 0; i < StorageLength(); i++)
+            var length = await StorageLengthAsync();
+            for (int i = 0; i < length; i++)
             {
                 result.Add(await _db.GetItemAsync<Track>(i.ToString()));
             }
@@ -44,11 +45,12 @@ namespace BlockFluteRecorder.DAL
         {
             if (item.Id == default)
             {
-                item.Id = StorageLength().ToString();
+                var length = await StorageLengthAsync();
+                item.Id = length.ToString();
             }
             await _db.SetItemAsync(item.Id, item);
         }
 
-        private int StorageLength() => _db.LengthAsync().Result;
+        private async Task<int> StorageLengthAsync() => await _db.LengthAsync();
     }
 }

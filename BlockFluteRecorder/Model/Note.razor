@@ -1,11 +1,14 @@
-﻿@if (note is not null)
+﻿@if (Value is not null)
 {
-    <img src="@note.Image" @onclick="@(() => OnClick.InvokeAsync(note))" />
+    <img class="@Class" src="@Value.Image" @onclick="@(() => OnClick.InvokeAsync(Value))" />
 }
 
 @code {
     [Parameter]
-    public Note note { get; set; }
+    public Note Value { get; set; }
+
+    [Parameter]
+    public string Class { get; set; }
 
     [Parameter]
     public EventCallback<Note> OnClick { get; set; }
