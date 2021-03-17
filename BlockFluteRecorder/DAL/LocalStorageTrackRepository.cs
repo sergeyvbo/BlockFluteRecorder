@@ -7,21 +7,17 @@ using System.Threading.Tasks;
 
 namespace BlockFluteRecorder.DAL
 {
-    public class LocalStorageTrackRepository : IRepository<Track>
+    public class LocalStorageTrackRepository : ITrackRepository
     {
         private ILocalStorageService _db;
         public LocalStorageTrackRepository(ILocalStorageService db)
         {
             _db = db;
         }
-        public void Create(Track item)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void Delete(string id)
+        public async Task DeleteAsync(Track item)
         {
-            _db.RemoveItemAsync(id);
+            await _db.RemoveItemAsync(item.Id);
         }
 
         public void Dispose()
@@ -29,31 +25,30 @@ namespace BlockFluteRecorder.DAL
             
         }
 
-        public IEnumerable<Track> FindAll()
+        public async Task<List<Track>> FindAllAsync()
         {
             var result = new List<Track>();
             for (int i = 0; i < StorageLength(); i++)
             {
-                _db.GetItemAsync<Track>(i.ToString());
-                
+                result.Add(await _db.GetItemAsync<Track>(i.ToString()));
             }
+            return result;
         }
 
-        public Track FindById(string id)
+        public async Task<Track> FindByIdAsync(string Id)
         {
-            throw new NotImplementedException();
+            return await _db.GetItemAsync<Track>(Id);
         }
 
-        public void Save()
+        public async Task SaveAsync(Track item)
         {
-            throw new NotImplementedException();
+            if (item.Id == default)
+            {
+                item.Id = StorageLength().ToString();
+            }
+            await _db.SetItemAsync(item.Id, item);
         }
 
-        public void Update(Track item)
-        {
-            throw new NotImplementedException();
-        }
-
-        private async Task<int> StorageLength() => await _db.LengthAsync();
+        private int StorageLength() => _db.LengthAsync().Result;
     }
 }

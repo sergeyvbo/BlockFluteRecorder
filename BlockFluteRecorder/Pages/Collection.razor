@@ -1,0 +1,27 @@
+﻿@page "/collection"
+@inject ITrackRepository _db 
+
+<h1> My Collection</h1>
+
+@if (Tracks is null)
+{
+    <img src="img/loading.gif" />
+}
+else
+{
+<div class="card-deck">
+    @foreach (var track in Tracks)
+    {
+        <TrackCard Track="track"/>
+    }
+</div>
+}
+
+@code {
+    public List<Track> Tracks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tracks = await _db.FindAllAsync();
+    }
+}

@@ -1,7 +1,5 @@
-﻿@inject Blazored.LocalStorage.ILocalStorageService ls
-
+﻿
 @page "/"
-<button @onclick="SaveTrack">save</button>
 <Canvas @ref="_canvas" CurrentTrack="_currentTrack"></Canvas>
 <Palette AddNote="AddNote"></Palette>
 
@@ -20,45 +18,6 @@
     protected override async Task OnInitializedAsync()
     {
         _tracks = new();
-        var length = await ls.LengthAsync();
-        Console.WriteLine(length);
-        for (int i = 0; i < length; i++)
-        {
-            var track = await ls.GetItemAsync<Track>(i.ToString());
-            Console.WriteLine(track);
-            _tracks.Add(track);
-        }
-        _currentTrack = _tracks.FirstOrDefault();
-
-        LoadTrack(_currentTrack);
-        Console.WriteLine("Loaded track" + _currentTrack?.ToString());
+        
     }
-
-    private void LoadTrack(Track track)
-    {
-        if (track is null)
-        {
-            return;
-        }
-        _canvas.CurrentTrack = _currentTrack;
-    }
-
-    private async Task SaveTrack()
-    {
-        _currentTrack = _canvas.CurrentTrack;
-        if (!_tracks.Any(i => i.Id == _currentTrack.Id))
-        {
-            _tracks.Add(_currentTrack);
-        }
-        if (await ls.ContainKeyAsync(_currentTrack.Id))
-        {
-            await ls.SetItemAsync(_currentTrack.Id, _currentTrack);
-            return;
-        }
-        var length = (await ls.LengthAsync()).ToString();
-        await ls.SetItemAsync(length, _currentTrack);
-        _currentTrack.Id = length;
-        Console.WriteLine("Saved track " +_currentTrack.ToString());
-    }
-
 }

@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using BlockFluteRecorder.DAL;
 using BlockFluteRecorder.Model;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,8 +24,8 @@ namespace BlockFluteRecorder
             builder.Services.AddTransient(sp => new HttpClient
             {
                 BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
-            })
-                .AddBlazoredLocalStorage();
+            }).AddBlazoredLocalStorage();
+            builder.Services.AddScoped<ITrackRepository, LocalStorageTrackRepository>();
             await builder.Build().RunAsync();
         }
     }
