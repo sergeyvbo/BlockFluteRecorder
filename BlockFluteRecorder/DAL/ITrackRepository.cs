@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlockFluteRecorder.DAL
 {
-    interface ITrackRepository
+    public interface ITrackRepository
     {
         Task<List<Track>> FindAllAsync();
         Task SaveAsync(Track item);
