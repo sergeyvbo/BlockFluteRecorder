@@ -12,6 +12,7 @@ namespace BlockFluteRecorder.DAL
         Task SaveAsync(Track item);
         Task DeleteAsync(Track item);
         Task<Track> FindByIdAsync(string Id);
-        
+        Task<Track> FirstAsync();
+
     }
 }

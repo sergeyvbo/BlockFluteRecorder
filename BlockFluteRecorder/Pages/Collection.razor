@@ -19,18 +19,19 @@ else
 
     @code {
         public List<Track> Tracks;
-        public Track SelectedTrack;
+        public Track SelectedTrack { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             Tracks = await _db.FindAllAsync();
+            SelectedTrack = await _db.FirstAsync();
         }
 
         private async Task DeleteTrack(Track track)
         {
             if (track.Equals(SelectedTrack))
             {
-                SelectedTrack = null;
+                SelectedTrack = await _db.FirstAsync();
             }
             await _db.DeleteAsync(track);
             Tracks.Remove(track);

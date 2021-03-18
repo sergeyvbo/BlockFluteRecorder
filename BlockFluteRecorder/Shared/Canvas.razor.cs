@@ -21,18 +21,15 @@ namespace BlockFluteRecorder.Shared
         public bool IsPlaying { get; set; } = false;       
         [Parameter]
         public Track CurrentTrack {
-            get 
-            {
-                return new Track { Notes = Track, Title = Title };
-            }
+            get => new Track { Notes = Notes, Title = Title };
             set 
             {
-                Track = value?.Notes;
+                Notes = value?.Notes;
                 Title = value?.Title;
                 StateHasChanged();
             }
         }
-        public List<Note> Track { get; set; }
+        public List<Note> Notes { get; set; }
         public async Task SaveAsync()
         {
             await _db.SaveAsync(CurrentTrack);
@@ -47,14 +44,14 @@ namespace BlockFluteRecorder.Shared
         public void AddNote(Note note)
         {
             Stop();
-            Track.Add(note);
+            Notes.Add(note);
             StateHasChanged();
         }
 
         public void DeleteNote(Note note)
         {
             Stop();
-            Track.Remove(note);
+            Notes.Remove(note);
         }
 
         public void Print()
@@ -64,7 +61,7 @@ namespace BlockFluteRecorder.Shared
 
         protected override void OnInitialized()
         {
-            Track ??= new();
+            Notes ??= new List<Note>();
         }
     }
 }

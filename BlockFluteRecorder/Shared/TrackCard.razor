@@ -32,6 +32,8 @@
     public bool IsSelected { get; set; } = false;
     [Parameter]
     public EventCallback<Track> DeleteTrack { get; set; }
+    [Parameter]
+    public EventCallback<Track> SelectTrack { get; set; }
 
     private string style => IsSelected ? "text-white bg-primary mb-3" : "bg-light mb-3";
 
