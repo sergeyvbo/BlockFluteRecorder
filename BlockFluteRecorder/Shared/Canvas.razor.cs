@@ -17,19 +17,10 @@ namespace BlockFluteRecorder.Shared
         private ITrackRepository _db { get; set; }
         [Inject]
         private IJSRuntime _js { get; set; }
-        public string Title { get; set; }
-        public bool IsPlaying { get; set; } = false;       
-        [Parameter]
-        public Track CurrentTrack {
-            get => new Track { Notes = Notes, Title = Title };
-            set 
-            {
-                Notes = value?.Notes;
-                Title = value?.Title;
-                StateHasChanged();
-            }
-        }
-        public List<Note> Notes { get; set; }
+        public bool IsPlaying { get; set; } = false;
+        [Parameter] 
+        public Track CurrentTrack { get; set; }
+
         public async Task SaveAsync()
         {
             await _db.SaveAsync(CurrentTrack);
@@ -44,14 +35,14 @@ namespace BlockFluteRecorder.Shared
         public void AddNote(Note note)
         {
             Stop();
-            Notes.Add(note);
+            (CurrentTrack.Notes ??= new List<Note>()).Add(note);
             StateHasChanged();
         }
 
         public void DeleteNote(Note note)
         {
             Stop();
-            Notes.Remove(note);
+            CurrentTrack.Notes.Remove(note);
         }
 
         public void Print()
@@ -61,7 +52,7 @@ namespace BlockFluteRecorder.Shared
 
         protected override void OnInitialized()
         {
-            Notes ??= new List<Note>();
+            CurrentTrack ??= new Track();
         }
     }
 }

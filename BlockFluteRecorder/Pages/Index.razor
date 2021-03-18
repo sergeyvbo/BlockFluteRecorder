@@ -1,23 +1,18 @@
 ﻿
 @page "/"
-<Canvas @ref="_canvas" CurrentTrack="_currentTrack"></Canvas>
+<p>@(CurrentTrack?.Title)</p>
+<Canvas @ref="_canvas" CurrentTrack="CurrentTrack"></Canvas>
 <Palette AddNote="AddNote"></Palette>
 
 @code {
 
-    private List<Track> _tracks;
-    private Track _currentTrack;
+    [CascadingParameter]
+    protected Track CurrentTrack { get; set; }
 
     private Canvas _canvas;
 
     private void AddNote(Note note)
     {
         _canvas.AddNote(note);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        _tracks = new();
-        
     }
 }

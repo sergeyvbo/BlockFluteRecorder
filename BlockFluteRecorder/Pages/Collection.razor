@@ -2,6 +2,7 @@
 @inject ITrackRepository _db 
 
 <h1> My Collection</h1>
+<p>@(SelectedTrack?.Title)</p>
 
 @if (Tracks is null)
 {
@@ -19,6 +20,8 @@ else
 
     @code {
         public List<Track> Tracks;
+
+        [CascadingParameter]
         public Track SelectedTrack { get; set; }
 
         protected override async Task OnInitializedAsync()

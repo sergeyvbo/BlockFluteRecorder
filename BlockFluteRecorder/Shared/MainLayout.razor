@@ -11,8 +11,14 @@
         </div>
 
         <div class="content px-4">
-            @Body
+            <CascadingValue Value="CurrentTrack">
+                @Body
+            </CascadingValue>
         </div>
 
     </div>
 </div>
+
+@code {
+    private Track CurrentTrack { get ; set; }
+}

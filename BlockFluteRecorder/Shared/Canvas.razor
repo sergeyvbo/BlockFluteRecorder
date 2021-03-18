@@ -1,7 +1,7 @@
 ﻿<div class="container-fluid">
     <div class="row justify-content-start">
         <div class="col">
-            <input class="form-control form-control-lg" type="text" @bind="Title" placeholder="Title">
+            <input class="form-control form-control-lg" type="text" @bind="CurrentTrack.Title" placeholder="Title">
 
         </div>
         <div class="col col-lg-2">
@@ -37,10 +37,12 @@
 
 <div>
     <img src="img/key.png" />
-    @foreach (var note in Notes)
+    @if (CurrentTrack.Notes is not null)
+    {
+        @foreach (var note in CurrentTrack.Notes)
         {
-    <Note Value="@note" OnClick="DeleteNote" />
+            <Note Value="@note" OnClick="DeleteNote" />
         }
-
+    }
 </div>
 
