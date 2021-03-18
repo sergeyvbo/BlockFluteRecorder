@@ -31,7 +31,12 @@ namespace BlockFluteRecorder.DAL
             var length = await StorageLengthAsync();
             for (int i = 0; i < length; i++)
             {
-                result.Add(await _db.GetItemAsync<Track>(i.ToString()));
+                var item = await _db.GetItemAsync<Track>(i.ToString());
+                if (item is not null)
+                {
+                    result.Add(item);
+                }
+                
             }
             return result;
         }

@@ -12,7 +12,7 @@ else
 <div class="card-columns">
     @foreach (var track in Tracks)
     {
-        <TrackCard Track="track" IsSelected="@(IsSelected(track))" />
+        <TrackCard Track="track" IsSelected="@(IsSelected(track))" DeleteTrack="DeleteTrack"/>
     }
 </div>
     }
@@ -26,5 +26,21 @@ else
             Tracks = await _db.FindAllAsync();
         }
 
-        private bool IsSelected(Track track) => track.Equals(SelectedTrack);
+        private async Task DeleteTrack(Track track)
+        {
+            if (track.Equals(SelectedTrack))
+            {
+                SelectedTrack = null;
+            }
+            await _db.DeleteAsync(track);
+            Tracks.Remove(track);
+            StateHasChanged();
+        }
+
+        private bool IsSelected(Track track)
+        {
+            Console.WriteLine(track);
+            Console.WriteLine(SelectedTrack);
+            return false;
+        }
     }
