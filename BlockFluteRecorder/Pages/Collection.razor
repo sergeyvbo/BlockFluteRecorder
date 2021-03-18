@@ -9,19 +9,22 @@
 }
 else
 {
-<div class="card-deck">
+<div class="card-columns">
     @foreach (var track in Tracks)
     {
-        <TrackCard Track="track"/>
+        <TrackCard Track="track" IsSelected="@(IsSelected(track))" />
     }
 </div>
-}
-
-@code {
-    public List<Track> Tracks;
-
-    protected override async Task OnInitializedAsync()
-    {
-        Tracks = await _db.FindAllAsync();
     }
-}
+
+    @code {
+        public List<Track> Tracks;
+        public Track SelectedTrack;
+
+        protected override async Task OnInitializedAsync()
+        {
+            Tracks = await _db.FindAllAsync();
+        }
+
+        private bool IsSelected(Track track) => track.Equals(SelectedTrack);
+    }
