@@ -2,12 +2,12 @@
 
 @if(Track is not null)
 {
-    <div class="card w-100 @style">
+    <div class="card w-100 @style" @ondblclick="Edit">
         <div class="card-body">
             <div class="container-fluid">
                 <div class="row justify-content-start">
                     <div class="col">
-                        <h2 @onclick="Edit">@(Track.Title)</h2>
+                        <h2>@(Track.Title)</h2>
                         <h6>Id: @(Track.Id)</h6>
                         <h6>length: @(Track.Notes.Count)</h6>
                     </div>
@@ -42,11 +42,8 @@
 
     public void Edit()
     {
-        IsSelected = !IsSelected;
-        if (IsSelected)
-        {
-            SelectTrack.InvokeAsync(Track);
-        }
+        IsSelected = true;
+        SelectTrack.InvokeAsync(Track);
     }
 
     public async Task Delete()
