@@ -16,5 +16,7 @@ namespace BlockFluteRecorder.DAL
         Task SetCurrentTrackAsync(Track track);
         Task<Track> GetCurrentTrackAsync();
 
+        Task<string> GetMinimalUnusedKeyAsync();
+
     }
 }

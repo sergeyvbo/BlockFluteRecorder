@@ -83,7 +83,7 @@ namespace BlockFluteRecorder.DAL
             return await _db.GetItemAsync<Track>(CURRENT_TRACK_KEY);
         }
 
-        private async Task<string> GetMinimalUnusedKeyAsync()
+        public async Task<string> GetMinimalUnusedKeyAsync()
         {
             List<int> keys = new();
             var length = await StorageLengthAsync();

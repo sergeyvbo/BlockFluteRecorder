@@ -1,5 +1,6 @@
 ﻿@page "/collection"
-@inject ITrackRepository _db 
+@inject ITrackRepository _db
+@inject NavigationManager NavigationManager
 
 <h1> My Collection</h1>
 
@@ -9,12 +10,21 @@
 }
 else
 {
-<div class="card-columns">
-    @foreach (var track in Tracks)
-    {
-        <TrackCard Track="track" IsSelected="@(IsSelected(track))" DeleteTrack="DeleteTrack" SelectTrack="SelectTrack"/>
-    }
-</div>
+    <div class="card-columns">
+        @foreach (var track in Tracks)
+        {
+            <TrackCard Track="track" IsSelected="@(IsSelected(track))" DeleteTrack="DeleteTrack" SelectTrack="SelectTrack" />
+        }
+        <div class="card w-100 text-lg-center text-white bg-success mb-3" @onclick="AddTrack">
+            
+            <h1>
+                <p></p>
+                <span class="oi oi-plus " aria-hidden="true"></span>
+                <p></p>
+            </h1>
+            
+        </div>
+    </div>
 }
 
 @code {
@@ -32,18 +42,20 @@ else
     {
         if (track.Equals(SelectedTrack))
         {
-            SelectedTrack = await _db.GetCurrentTrackAsync() ?? await _db.FirstAsync();
+            SelectedTrack = await _db.FirstAsync();
+            await _db.SetCurrentTrackAsync(SelectedTrack);
         }
         await _db.DeleteAsync(track);
         Tracks.Remove(track);
         StateHasChanged();
     }
 
-    private void SelectTrack(Track track)
+    private async Task SelectTrack(Track track)
     {
-        _db.SetCurrentTrackAsync(track);
+        await _db.SetCurrentTrackAsync(track);
         SelectedTrack = track;
         StateHasChanged();
+        NavigationManager.NavigateTo("/");
     }
 
     private bool IsSelected(Track track)
@@ -53,5 +65,13 @@ else
             return false;
         }
         return track.Equals(SelectedTrack);
+    }
+
+    private async Task AddTrack()
+    {
+        var id = await _db.GetMinimalUnusedKeyAsync();
+        var newTrack = new Track { Id = id };
+        SelectTrack(newTrack);
+
     }
 }
