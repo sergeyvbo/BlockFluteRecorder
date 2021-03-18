@@ -2,7 +2,6 @@
 @inject ITrackRepository _db 
 
 <h1> My Collection</h1>
-<p>@(SelectedTrack?.Title)</p>
 
 @if (Tracks is null)
 {
@@ -13,38 +12,46 @@ else
 <div class="card-columns">
     @foreach (var track in Tracks)
     {
-        <TrackCard Track="track" IsSelected="@(IsSelected(track))" DeleteTrack="DeleteTrack"/>
+        <TrackCard Track="track" IsSelected="@(IsSelected(track))" DeleteTrack="DeleteTrack" SelectTrack="SelectTrack"/>
     }
 </div>
+}
+
+@code {
+    public List<Track> Tracks;
+
+    public Track SelectedTrack { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tracks = await _db.FindAllAsync();
+        SelectedTrack = await _db.GetCurrentTrackAsync() ?? await _db.FirstAsync();
     }
 
-    @code {
-        public List<Track> Tracks;
-
-        [CascadingParameter]
-        public Track SelectedTrack { get; set; }
-
-        protected override async Task OnInitializedAsync()
+    private async Task DeleteTrack(Track track)
+    {
+        if (track.Equals(SelectedTrack))
         {
-            Tracks = await _db.FindAllAsync();
-            SelectedTrack = await _db.FirstAsync();
+            SelectedTrack = await _db.GetCurrentTrackAsync() ?? await _db.FirstAsync();
         }
+        await _db.DeleteAsync(track);
+        Tracks.Remove(track);
+        StateHasChanged();
+    }
 
-        private async Task DeleteTrack(Track track)
-        {
-            if (track.Equals(SelectedTrack))
-            {
-                SelectedTrack = await _db.FirstAsync();
-            }
-            await _db.DeleteAsync(track);
-            Tracks.Remove(track);
-            StateHasChanged();
-        }
+    private void SelectTrack(Track track)
+    {
+        _db.SetCurrentTrackAsync(track);
+        SelectedTrack = track;
+        StateHasChanged();
+    }
 
-        private bool IsSelected(Track track)
+    private bool IsSelected(Track track)
+    {
+        if (track is null)
         {
-            Console.WriteLine(track);
-            Console.WriteLine(SelectedTrack);
             return false;
         }
+        return track.Equals(SelectedTrack);
     }
+}

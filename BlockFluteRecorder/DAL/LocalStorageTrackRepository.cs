@@ -10,6 +10,8 @@ namespace BlockFluteRecorder.DAL
     public class LocalStorageTrackRepository : ITrackRepository
     {
         private ILocalStorageService _db;
+
+        private const string CURRENT_TRACK_KEY = "currentTrack";
         public LocalStorageTrackRepository(ILocalStorageService db)
         {
             _db = db;
@@ -32,6 +34,10 @@ namespace BlockFluteRecorder.DAL
             for (var i = 0; i < length; i++)
             {
                 var key = await _db.KeyAsync(i);
+                if (key == CURRENT_TRACK_KEY)
+                {
+                    continue;
+                }
                 var item = await _db.GetItemAsync<Track>(key);
                 if (item is not null)
                 {
@@ -67,13 +73,28 @@ namespace BlockFluteRecorder.DAL
             await _db.SetItemAsync(item.Id, item);
         }
 
+        public async Task SetCurrentTrackAsync(Track track)
+        {
+            await _db.SetItemAsync(CURRENT_TRACK_KEY, track);
+        }
+
+        public async Task<Track> GetCurrentTrackAsync()
+        {
+            return await _db.GetItemAsync<Track>(CURRENT_TRACK_KEY);
+        }
+
         private async Task<string> GetMinimalUnusedKeyAsync()
         {
             List<int> keys = new();
             var length = await StorageLengthAsync();
             for (var i = 0; i < length; i++)
             {
-                var key = int.Parse(await _db.KeyAsync(i));
+                string keyString = await _db.KeyAsync(i);
+                if (keyString == CURRENT_TRACK_KEY)
+                {
+                    continue;
+                }
+                var key = int.Parse(keyString);
                 keys.Add(key);
             }
             keys.Sort();
@@ -86,9 +107,6 @@ namespace BlockFluteRecorder.DAL
             }
             return keys.Count.ToString();
         }
-
-        
-
         private async Task<int> StorageLengthAsync() => await _db.LengthAsync();
     }
 }

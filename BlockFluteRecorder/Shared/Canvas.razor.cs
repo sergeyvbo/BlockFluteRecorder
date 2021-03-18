@@ -18,8 +18,8 @@ namespace BlockFluteRecorder.Shared
         [Inject]
         private IJSRuntime _js { get; set; }
         public bool IsPlaying { get; set; } = false;
-        [Parameter] 
-        public Track CurrentTrack { get; set; }
+        [Parameter]
+        public Track CurrentTrack { get; set; } = new Track();
 
         public async Task SaveAsync()
         {
@@ -50,9 +50,9 @@ namespace BlockFluteRecorder.Shared
             _js.InvokeVoidAsync("window.print");
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            CurrentTrack ??= new Track();
+            CurrentTrack = await _db.GetCurrentTrackAsync() ?? new Track();
         }
     }
 }

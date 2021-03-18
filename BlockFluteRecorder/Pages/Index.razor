@@ -1,13 +1,9 @@
 ﻿
 @page "/"
-<p>@(CurrentTrack?.Title)</p>
-<Canvas @ref="_canvas" CurrentTrack="CurrentTrack"></Canvas>
+<Canvas @ref="_canvas"></Canvas>
 <Palette AddNote="AddNote"></Palette>
 
 @code {
-
-    [CascadingParameter]
-    protected Track CurrentTrack { get; set; }
 
     private Canvas _canvas;
 

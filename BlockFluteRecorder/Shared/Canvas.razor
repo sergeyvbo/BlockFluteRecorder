@@ -1,48 +1,56 @@
-﻿<div class="container-fluid">
-    <div class="row justify-content-start">
-        <div class="col">
-            <input class="form-control form-control-lg" type="text" @bind="CurrentTrack.Title" placeholder="Title">
+﻿@if (CurrentTrack is null)
+{
+    <img src="img/loading.gif" />
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row justify-content-start">
+            <div class="col">
+                <input class="form-control form-control-lg" type="text" @bind="@(CurrentTrack.Title)" placeholder="Title">
+            </div>
+            <div class="col col-lg-2">
+                <div class="btn-group btn-group-lg" role="group">
+                    @if (IsPlaying)
+                    {
+                        <button type="button" class="btn btn-secondary btn-light" @onclick="PlayPause">
+                            <span class="oi oi-media-pause" aria-hidden="true"></span>
+                        </button>
 
-        </div>
-        <div class="col col-lg-2">
-            <div class="btn-group btn-group-lg" role="group">
-                @if (IsPlaying)
-                {
-                    <button type="button" class="btn btn-secondary btn-light" @onclick="PlayPause">
-                        <span class="oi oi-media-pause" aria-hidden="true"></span>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary btn-success" @onclick="PlayPause">
+                            <span class="oi oi-media-play" aria-hidden="true"></span>
+                        </button>
+                    }
+                    <button type="button" class="btn btn-secondary btn-light" @onclick="Stop">
+                        <span class="oi oi-media-stop" aria-hidden="true"></span>
                     </button>
+                    <button type="button" class="btn btn-secondary btn-light" @onclick="SaveAsync">
+                        <span class="oi oi-data-transfer-upload" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-light" @onclick="Print">
+                        <span class="oi oi-print" aria-hidden="true"></span>
+                    </button>
+                </div>
 
-                }
-                else
-                {
-                    <button type="button" class="btn btn-secondary btn-success" @onclick="PlayPause">
-                        <span class="oi oi-media-play" aria-hidden="true"></span>
-                    </button>
-                }
-                <button type="button" class="btn btn-secondary btn-light" @onclick="Stop">
-                    <span class="oi oi-media-stop" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-secondary btn-light" @onclick="SaveAsync">
-                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span>
-                </button>
-                <button type="button" class="btn btn-secondary btn-light" @onclick="Print">
-                    <span class="oi oi-print" aria-hidden="true"></span>
-                </button>
             </div>
 
         </div>
-
     </div>
-</div>
 
-<div>
-    <img src="img/key.png" />
-    @if (CurrentTrack.Notes is not null)
-    {
-        @foreach (var note in CurrentTrack.Notes)
+    <div>
+        <img src="img/key.png" />
+        @if (CurrentTrack.Notes is not null)
         {
-            <Note Value="@note" OnClick="DeleteNote" />
+            @foreach (var note in CurrentTrack.Notes)
+            {
+                <Note Value="@note" OnClick="DeleteNote" />
+            }
         }
-    }
-</div>
+    </div>
+}
+
+
 

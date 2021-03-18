@@ -1,29 +1,32 @@
 ﻿@inject IJSRuntime _js
 
-<div class="card w-100 @style">
-    <div class="card-body">
-        <div class="container-fluid">
-            <div class="row justify-content-start">
-                <div class="col">
-                    <h2 @onclick="Edit">@(Track.Title)</h2>
-                    <h6>Id: @(Track.Id)</h6>
-                    <h6>length: @(Track.Notes.Count)</h6>
-                </div>
-                <div class="col text-right">
-                    <div class="btn-group btn-group-lg" role="group">
-                        <button type="button" class="btn btn-secondary btn-light" @onclick="Edit">
-                            <span class="oi oi-pencil" aria-hidden="true"></span>
-                        </button>
-
-                        <button type="button" class="btn btn-secondary btn-light" @onclick="Delete">
-                            <span class="oi oi-x" aria-hidden="true"></span>
-                        </button>
+@if(Track is not null)
+{
+    <div class="card w-100 @style">
+        <div class="card-body">
+            <div class="container-fluid">
+                <div class="row justify-content-start">
+                    <div class="col">
+                        <h2 @onclick="Edit">@(Track.Title)</h2>
+                        <h6>Id: @(Track.Id)</h6>
+                        <h6>length: @(Track.Notes.Count)</h6>
+                    </div>
+                    <div class="col text-right">
+                        <div class="btn-group btn-group-lg" role="group">
+                            <button type="button" class="btn btn-secondary btn-light" @onclick="Edit">
+                                <span class="oi oi-pencil" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-secondary btn-light" @onclick="Delete">
+                                <span class="oi oi-x" aria-hidden="true"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
+
 
 @code {
     [Parameter]
@@ -40,6 +43,10 @@
     public void Edit()
     {
         IsSelected = !IsSelected;
+        if (IsSelected)
+        {
+            SelectTrack.InvokeAsync(Track);
+        }
     }
 
     public async Task Delete()
